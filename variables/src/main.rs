@@ -9,4 +9,6 @@ fn main() {
     let spaces = "    ";
     let spaces = spaces.len();
 
+    println!("MAX_POINTS {}", MAX_POINTS);
+    println!("space len {}", spaces);
 }
