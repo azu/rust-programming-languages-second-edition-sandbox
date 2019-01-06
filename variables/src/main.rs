@@ -5,5 +5,8 @@ fn main() {
     x = 6;
     println!("This value x is {}", x);
 
+    // シャドーイングで型違いもいける
+    let spaces = "    ";
+    let spaces = spaces.len();
 
 }
