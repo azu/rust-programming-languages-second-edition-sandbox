@@ -1,11 +1,3 @@
-fn main() {
-    println!("{}", value_in_cents(Coin::Penny));
-    println!("{}", value_in_cents(Coin::Nickel));
-    println!("{}", value_in_cents(Coin::Dime));
-    println!("{}", value_in_cents(Coin::Quarter));
-    println!("{:?}", plus_one(Some(1)));
-}
-
 enum Coin {
     Penny,
     Nickel,
@@ -13,12 +5,17 @@ enum Coin {
     Quarter,
 }
 
-fn value_in_cents(coin: Coin) -> u32 {
-    match coin {
-        Coin::Penny => 1,
-        Coin::Nickel => 5,
-        Coin::Dime => 10,
-        Coin::Quarter => 25,
+fn main() {
+    let two = plus_one(Some(2));
+    // matchの省略ができる
+    // matchに対してdefaultケースがなくてもエラーにならいあ
+    if let Some(3) = two {
+        println!("Yay");
+    }
+
+    let coin = Coin::Dime;
+    if let Coin::Dime = coin {
+        println!("DimeDime");
     }
 }
 
