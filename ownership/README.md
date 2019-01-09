@@ -218,3 +218,104 @@ fn dangle() -> &String {
 
 - 任意のタイミングで、一つの可変参照か不変な参照いくつでものどちらかを行える。
 - 参照は常に有効でなければならない。
+
+
+## [スライス](https://doc.rust-jp.rs/book/second-edition/ch04-03-slices.html)
+
+所有権のない別のデータ型 = スライス
+
+次の例は`s`の一部として`word_length`がある。
+けど`s`を消したあとも`word_length`は参照できる。
+
+これをどうにかするのがスライス
+
+```rust
+
+fn main() {
+    let mut s = String::from("hello world");
+    let word_length = first_word_length(&s);
+    println!("{}", word_length);
+    println!("{}", s);
+    s.clear();
+    // sは消えてもwordはまだ参照できてる
+    // wordはsの一部をとってるはずなのに => 文字列スライスでかいけつ
+    println!("{}", word_length);
+}
+
+
+
+fn first_word_length(s: &String) -> usize {
+    // バイトへ変換
+    let bytes = s.as_bytes();
+    for (i, &item) in bytes.iter().enumerate() {
+        // b" " 空白バイトがあったら、indexを返す
+        if item == b' ' {
+            return i;
+        }
+    }
+    // 空白バイトがない = sの長さが文字の長さ
+    s.len()
+}
+
+```
+
+### 文字列スライス
+
+Stringの一部を参照する。`開始..終点`
+
+```rust
+let s = String::from("hello world");
+
+let hello = &s[0..5];
+let world = &s[6..11];
+```
+
+色々スライスできる
+
+```rust
+let s = String::from("hello");
+
+let len = s.len();
+
+let slice = &s[0..len];
+let slice = &s[..];
+```
+
+`&str`はこの文字列スライスを意味する型。
+スライスを返すときは `-> &str`みたいになる。
+
+さっきの例は文字列スライスを返すようにすれば、`s`のスライスである`word_length`も自動的に消える
+
+```rust
+fn main() {
+    let mut s = String::from("hello world");
+    let word_length = first_word_length(&s);
+    println!("{}", word_length.len());
+    println!("{}", s);
+    s.clear();
+    // sは消えたらword_lengthは参照できなくなる
+    // println!("{}", word_length);
+}
+
+
+
+// &strは文字列スライス
+fn first_word_length(s: &String) -> &str {
+    // バイトへ変換
+    let bytes = s.as_bytes();
+    for (i, &item) in bytes.iter().enumerate() {
+        // b" " 空白バイトがあったら、indexを返す
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+    // 空白バイトがない = sの長さが文字の長さ
+    &s[..]
+}
+
+```
+
+`&str`を受け取るようにすれば文字列と文字列スライスどっちも受け取れる
+
+
+配列にもスライスがある、。
