@@ -141,3 +141,80 @@ fn takes_and_gives_back(a_string: String) -> String { // a_stringがスコープ
 
 ## [参照と借用](https://doc.rust-jp.rs/book/second-edition/ch04-02-references-and-borrowing.html)
 
+moveするんじゃなくて一時的に貸す = 参照を渡す `&` <-> 参照外し `&`
+
+```rust
+fn main() {
+    let s1 = String::from("hello");
+
+    let len = calculate_length(&s1);
+
+    // '{}'の長さは、{}です
+    println!("The length of '{}' is {}.", s1, len);
+}
+
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}
+```
+
+> 関数の引数に参照を取ることを借用と呼びます。
+
+
+`s: &String`は`Stringを借用してる
+
+借用した値はデフォルトでは変更できない、。
+参照もデフォルトimmubtaleなので。
+
+## 可変な参照
+
+これは`mut`な`&`を定義すればいいだけ
+
+`&mut`で変更可能な参照を定義できる
+
+```rust
+fn main() {
+    let mut s = String::from("test");
+    change(&mut s);
+    println!("{}", s);
+}
+
+fn change(s: &mut String) {
+    s.push_str("-test?");
+}
+```
+
+いつでも可変な参照を作れるわけじゃない。
+不変な参照 + 可変な参照 の組み合わせはNG。
+型定義的な意味じゃなくて値的に可変な可能性はコンパイルエラー
+```rust
+
+let mut s = String::from("hello");
+
+let r1 = &s; // 問題なし
+let r2 = &s; // 問題なし
+let r3 = &mut s; // 大問題！
+
+```
+
+つぎのように参照をかえしてもスコープを抜ければ値そのものが消える。
+つまり `&s`は無を参照 = ダングリング参照 となるためコンパイルエラー。
+
+```rust
+
+fn main() {
+    // これはライフタイムエラー
+    let reference_to_nothing = dangle();
+}
+
+fn dangle() -> &String {
+    let s = String::from("hello");
+
+    &s
+}
+
+```
+
+
+- 任意のタイミングで、一つの可変参照か不変な参照いくつでものどちらかを行える。
+- 参照は常に有効でなければならない。
