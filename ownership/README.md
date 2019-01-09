@@ -318,4 +318,7 @@ fn first_word_length(s: &String) -> &str {
 `&str`を受け取るようにすれば文字列と文字列スライスどっちも受け取れる
 
 
-配列にもスライスがある、。
+配列にもスライスがある。
+
+
+- [Stringとstr入門 - Qiita](https://qiita.com/Mizunashi_Mana/items/db88cb0bff002abce1ae)
