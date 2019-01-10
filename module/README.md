@@ -12,3 +12,16 @@
 `mod a` は a.rs に実装され、実装はモジュールは関数だけという感じになる
 
 関数とmodそれぞれに`pub`をつけて公開する
+
+同じファイル内のmodを参照。useで名前を持ってくるの便利そう。
+
+```rust
+#[cfg(test)]
+mod tests {
+    use super::client;
+    #[test]
+    fn it_works() {
+        client::connect;
+    }
+}
+```
