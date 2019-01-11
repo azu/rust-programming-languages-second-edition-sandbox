@@ -69,6 +69,7 @@ mod tests {
 
     #[test]
     fn it_adds_two() {
+        println!("teasta");
         assert_eq!(4, add_two(2));
     }
 
